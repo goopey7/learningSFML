@@ -17,6 +17,7 @@ class Game
 		void initWindow();
 
 		void handleEvents();
+		void updateDt();
 		void update();
 		void render();
 		void run();
@@ -26,5 +27,8 @@ class Game
 	private:
 		sf::RenderWindow* window;
 		sf::Event ev;
+
+		sf::Clock dtClock;
+		float dt;
 };
 

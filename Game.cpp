@@ -26,6 +26,14 @@ void Game::handleEvents()
 	}
 }
 
+void Game::updateDt()
+{
+	dt = dtClock.restart().asSeconds();
+
+	system("clear");
+	std::cout << "dt: " << dt << std::endl;
+}
+
 void Game::update()
 {
 }
@@ -43,6 +51,7 @@ void Game::run()
 {
 	while(window->isOpen())
 	{
+		updateDt();
 		handleEvents();
 		update();
 		render();
