@@ -4,7 +4,19 @@
 
 void Game::initWindow()
 {
-	window = new sf::RenderWindow(sf::VideoMode(800,600), "Learning SFML");
+	std::ifstream ifs("config/window.cfg");
+	std::string title;
+	sf::VideoMode windowSize(800,600);
+	bool vSyncEnabled = false;
+	if(ifs.is_open())
+	{
+		std::getline(ifs,title);
+		ifs >> windowSize.width >> windowSize.height;
+		ifs >> vSyncEnabled;
+	}
+	ifs.close();
+	window = new sf::RenderWindow(windowSize,title);
+	window->setVerticalSyncEnabled(vSyncEnabled);
 }
 
 Game::Game()
@@ -29,9 +41,6 @@ void Game::handleEvents()
 void Game::updateDt()
 {
 	dt = dtClock.restart().asSeconds();
-
-	system("clear");
-	std::cout << "dt: " << dt << std::endl;
 }
 
 void Game::update()
