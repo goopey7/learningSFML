@@ -38,13 +38,14 @@ void Game::handleEvents()
 	}
 }
 
-void Game::updateDt()
+void Game::update(const float dt)
 {
-	dt = dtClock.restart().asSeconds();
+	std::cout << "UPDATE: " << dt << std::endl;
 }
 
-void Game::update()
+void Game::fixedUpdate(const float dt)
 {
+	std::cout << "FIXED UPDATE: " << dt << std::endl;
 }
 
 void Game::render()
@@ -58,12 +59,37 @@ void Game::render()
 
 void Game::run()
 {
+	const sf::Time TimePerUpdate = sf::seconds(1.f/TicksPerSec);
+
+	sf::Clock timer;
+	sf::Time prevTime = sf::Time::Zero;
+	sf::Time timeBetweenTicks = sf::Time::Zero;
+	
+	// GAME LOOP
 	while(window->isOpen())
 	{
-		updateDt();
+		// get the time
+		sf::Time currentTime = timer.getElapsedTime();
+		sf::Time dt = currentTime - prevTime;
+		timeBetweenTicks += dt;
+		prevTime = currentTime;
+
+		// Realtime Events
 		handleEvents();
-		update();
+		update(dt.asSeconds());
+
+		// Fixed Time Events
+		while(timeBetweenTicks >= TimePerUpdate)
+		{
+			fixedUpdate(dt.asSeconds());
+			// subtract a fixedUpdate worth of ticks
+			timeBetweenTicks-=TimePerUpdate;
+		}
+
+		// Rendering
 		render();
 	}
 }
+
+
 

@@ -19,8 +19,8 @@ class Game
 		void initWindow();
 
 		void handleEvents();
-		void updateDt();
-		void update();
+		void update(const float dt);
+		void fixedUpdate(const float dt);
 		void render();
 		void run();
 
@@ -30,7 +30,7 @@ class Game
 		sf::RenderWindow* window;
 		sf::Event ev;
 
-		sf::Clock dtClock;
-		float dt;
+		// For FixedUpdate
+		const int TicksPerSec = 60;
 };
 
