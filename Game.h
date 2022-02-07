@@ -1,6 +1,8 @@
 //Copyright Sam Collier 2022
 #pragma once
 
+#include "ResourceHolder.h"
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -11,6 +13,14 @@
 #include <SFML/Network.hpp>
 #include <SFML/Window.hpp>
 
+namespace Textures
+{
+	enum ID
+	{
+		Aircraft,
+		Desert,
+	};
+}
 class Game
 {
 	public:

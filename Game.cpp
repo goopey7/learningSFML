@@ -40,12 +40,10 @@ void Game::handleEvents()
 
 void Game::update(const float dt)
 {
-	std::cout << "UPDATE: " << dt << std::endl;
 }
 
 void Game::fixedUpdate(const float dt)
 {
-	std::cout << "FIXED UPDATE: " << dt << std::endl;
 }
 
 void Game::render()
@@ -59,8 +57,16 @@ void Game::render()
 
 void Game::run()
 {
-	const sf::Time TimePerUpdate = sf::seconds(1.f/TicksPerSec);
+	ResourceHolder<sf::Texture,Textures::ID> textures;
+	textures.load(Textures::Aircraft,"images/Eagle.png");
+	textures.load(Textures::Desert,"images/Desert.png");
 
+	sf::Sprite aircraft;
+	aircraft.setTexture(textures.get(Textures::Aircraft));
+	sf::Sprite desert;
+	desert.setTexture(textures.get(Textures::Desert));
+
+	const sf::Time TimePerUpdate = sf::seconds(1.f/TicksPerSec);
 	sf::Clock timer;
 	sf::Time prevTime = sf::Time::Zero;
 	sf::Time timeBetweenTicks = sf::Time::Zero;
@@ -87,7 +93,11 @@ void Game::run()
 		}
 
 		// Rendering
-		render();
+		window->clear();
+		window->draw(desert);
+		window->draw(aircraft);
+		window->display();
+		//render();
 	}
 }
 
