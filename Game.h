@@ -13,14 +13,6 @@
 #include <SFML/Network.hpp>
 #include <SFML/Window.hpp>
 
-namespace Textures
-{
-	enum ID
-	{
-		Aircraft,
-		Desert,
-	};
-}
 class Game
 {
 	public:
