@@ -6,6 +6,22 @@
 #include <memory>
 #include <map>
 
+namespace Textures
+{
+	enum ID
+	{
+		Aircraft,
+		Desert,
+	};
+}
+namespace Fonts
+{
+	enum ID
+	{
+		Arial,
+	};
+}
+// holds SFML resources in one place
 template <typename Resource, typename Identifier>
 class ResourceHolder
 {
@@ -17,6 +33,13 @@ class ResourceHolder
 	private:
 		std::map<Identifier,std::unique_ptr<Resource>> resourceMap;
 };
+namespace sf
+{
+	class Texture;
+	class Font;
+};
+typedef ResourceHolder<sf::Texture,Textures::ID> TextureHolder;
+typedef ResourceHolder<sf::Font,Fonts::ID> FontHolder;
 
 template<typename Resource, typename Identifier>
 void ResourceHolder<Resource, Identifier>::load(Identifier id, const std::string &fileName)
@@ -24,7 +47,7 @@ void ResourceHolder<Resource, Identifier>::load(Identifier id, const std::string
 	std::unique_ptr<Resource> resource(new Resource());
 	if(!resource->loadFromFile(fileName))
 	{
-		std::cout << "FAILED TO LOAD FILE\n";
+		std::cout << "FAILED TO LOAD FILE: " << fileName << std::endl;
 	}
 	resourceMap.insert(std::make_pair(id,std::move(resource)));
 }
