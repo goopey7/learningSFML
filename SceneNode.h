@@ -5,7 +5,9 @@
 #include <memory>
 #include <cassert>
 
-class SceneNode
+#include <SFML/Graphics.hpp>
+
+class SceneNode : public sf::Transformable, public sf::Drawable, private sf::NonCopyable
 {
 	public:
 		SceneNode();
@@ -16,5 +18,13 @@ class SceneNode
 	private:
 		std::vector<Ptr> children;
 		SceneNode* parent;
+
+		// final means that children of this class cannot override it
+		// draw renders the entire node and children
+		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override final;
+
+		// only draws the current node but not it's children
+		virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
+
 };
 

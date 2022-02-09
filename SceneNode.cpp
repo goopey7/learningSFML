@@ -28,3 +28,23 @@ SceneNode::Ptr SceneNode::detachChild(const SceneNode& node)
 	return returnNode;
 }
 
+void SceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) const
+{
+	// Two transforms are applied one after the other using the * operator
+
+	// This takes the parent's absolute transform and then applies the current node's
+	// relative transform. So this achieves the absolute world transform of the current node
+	// this is also how sf::Sprite handles it by combining it's own transform with the passed
+	// render state
+	states.transform *= getTransform();
+
+	// now that we have the absolute transform we can draw the node
+	drawCurrent(target,states);
+
+	// recursively draw all children
+	for(const Ptr& child : children)
+	{
+		child->draw(target,states);
+	}
+}
+

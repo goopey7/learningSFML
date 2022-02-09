@@ -1,16 +1,12 @@
 //Copyright Sam Collier 2022
 #pragma once
 
+#include "SceneNode.h"
 
-class Actor
+class Actor : public SceneNode
 {
 	public:
 		Actor();
 		~Actor();
-
-	protected:
-
-	private:
-		
 };
 
