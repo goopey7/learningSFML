@@ -22,10 +22,12 @@ void Game::initWindow()
 Game::Game()
 {
 	initWindow();
+	world = new World(*window);
 }
 
 Game::~Game()
 {
+	delete world;
 	delete window;
 }
 
@@ -40,6 +42,7 @@ void Game::handleEvents()
 
 void Game::update(const float dt)
 {
+	world->update(dt);
 }
 
 void Game::fixedUpdate(const float dt)
@@ -49,9 +52,8 @@ void Game::fixedUpdate(const float dt)
 void Game::render()
 {
 	window->clear();
-
-	// render stuff
-
+	world->draw();
+	window->setView(window->getDefaultView());
 	window->display();
 }
 

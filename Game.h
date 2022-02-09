@@ -1,8 +1,6 @@
 //Copyright Sam Collier 2022
 #pragma once
 
-#include "ResourceHolder.h"
-
 #include <iostream>
 #include <fstream>
 
@@ -11,6 +9,8 @@
 #include <SFML/System.hpp>
 #include <SFML/Network.hpp>
 #include <SFML/Window.hpp>
+
+#include "World.h"
 
 class Game
 {
@@ -25,11 +25,11 @@ class Game
 		void render();
 		void run();
 
-	protected:
-
 	private:
 		sf::RenderWindow* window;
 		sf::Event ev;
+
+		World* world;
 
 		// For FixedUpdate
 		const int TicksPerSec = 60;
