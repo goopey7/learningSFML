@@ -20,8 +20,7 @@ void Game::initWindow()
 }
 
 Game::Game()
-{
-	initWindow();
+{ initWindow();
 	world = new World(*window);
 }
 
@@ -60,7 +59,7 @@ void Game::render()
 
 void Game::run()
 {
-	const sf::Time TimePerUpdate = sf::seconds(1.f/TicksPerSec);
+	const sf::Time TimePerFixedUpdate = sf::seconds(1.f/TicksPerSec);
 	sf::Clock timer;
 	sf::Time prevTime = sf::Time::Zero;
 	sf::Time timeBetweenTicks = sf::Time::Zero;
@@ -79,11 +78,11 @@ void Game::run()
 		update(dt.asSeconds());
 
 		// Fixed Time Events
-		while(timeBetweenTicks >= TimePerUpdate)
+		while(timeBetweenTicks >= TimePerFixedUpdate)
 		{
-			fixedUpdate(dt.asSeconds());
+			fixedUpdate(TimePerFixedUpdate.asSeconds());
 			// subtract a fixedUpdate worth of ticks
-			timeBetweenTicks-=TimePerUpdate;
+			timeBetweenTicks-=TimePerFixedUpdate;
 		}
 
 		// Rendering

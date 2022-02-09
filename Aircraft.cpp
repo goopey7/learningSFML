@@ -24,10 +24,11 @@ void Aircraft::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) co
 
 void Aircraft::updateCurrent(const float dt)
 {
+	//move(0.f,-40*dt);
 }
 
 void Aircraft::fixedUpateCurrent(const float dt)
 {
-	move(0.f,-20*dt);
+	move(0.f,-40*dt);
 }
 
