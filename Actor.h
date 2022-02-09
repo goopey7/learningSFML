@@ -5,8 +5,5 @@
 
 class Actor : public SceneNode
 {
-	public:
-		Actor();
-		~Actor();
 };
 

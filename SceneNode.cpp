@@ -48,3 +48,35 @@ void SceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	}
 }
 
+
+void SceneNode::updateChildren(const float dt)
+{
+	for(Ptr &child : children)
+		child->update(dt);
+}
+
+void SceneNode::update(const float dt)
+{
+	updateCurrent(dt);
+	updateChildren(dt);
+}
+
+sf::Transform SceneNode::getWorldTransform() const
+{
+	sf::Transform transform = sf::Transform::Identity;
+
+	// Get absolute transform by accumulating all the transformations up the tree
+	// until we reach the root node. That will yield world transform
+	for(const SceneNode* node = this; node != nullptr; node = node->parent)
+	{
+		transform = node->getTransform() * transform;
+	}
+	return transform;
+}
+
+sf::Vector2f SceneNode::getWorldPosition() const
+{
+	// Apply transformation of world pos with origin
+	return getWorldTransform() * sf::Vector2f();
+}
+
