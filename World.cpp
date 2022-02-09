@@ -7,8 +7,7 @@ World::World(sf::RenderWindow& window)
 	: window(window),
 	worldView(window.getDefaultView()),
 	worldBounds(0.f,0.f,2000.f,2000.f),
-	spawnPos(worldBounds.width / 2.f,worldBounds.height / 2.f),
-	playerAircraft(nullptr)
+	spawnPos(worldBounds.width / 2.f,worldBounds.height / 2.f)
 {
 	loadTextures();
 	buildScene();
@@ -41,8 +40,7 @@ void World::buildScene()
 
 	// Aircraft
 	std::unique_ptr<Aircraft> leader(new Aircraft(textures));
-	playerAircraft = leader.get();
-	playerAircraft->setPosition(spawnPos);
+	leader->setPosition(spawnPos);
 	sceneLayers[Foreground]->attachChild(std::move(leader));
 }
 

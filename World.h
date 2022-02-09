@@ -1,6 +1,7 @@
 //Copyright Sam Collier 2022
 #pragma once
 
+#include <array>
 #include "SpriteNode.h"
 #include "Aircraft.h"
 
@@ -35,6 +36,5 @@ class World : private sf::NonCopyable
 
 		sf::FloatRect worldBounds;
 		sf::Vector2f spawnPos;
-		Aircraft* playerAircraft;
 };
 

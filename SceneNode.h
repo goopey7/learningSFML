@@ -21,7 +21,7 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
 
 	private:
 		std::vector<Ptr> children;
-		SceneNode* parent;
+		SceneNode* parent = nullptr;
 
 		// final means that children of this class cannot override it
 		// draw renders the entire node and children
