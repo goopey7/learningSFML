@@ -11,6 +11,7 @@ class Aircraft : public Actor
 		~Aircraft();
 		virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
 		virtual void updateCurrent(const float dt) override;
+		virtual void fixedUpateCurrent(const float dt) override;
 
 	private:
 		sf::Sprite sprite;

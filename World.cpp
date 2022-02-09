@@ -44,6 +44,11 @@ void World::buildScene()
 	sceneLayers[Foreground]->attachChild(std::move(leader));
 }
 
+void World::fixedUpdate(const float dt)
+{
+	sceneGraph.fixedUpdate(dt);
+}
+
 void World::update(const float dt)
 {
 	sceneGraph.update(dt);

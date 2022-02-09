@@ -9,6 +9,7 @@ class World : private sf::NonCopyable
 {
 	public:
 		explicit World(sf::RenderWindow& window);
+		void fixedUpdate(const float dt);
 		void update(const float dt);
 		void draw();
 

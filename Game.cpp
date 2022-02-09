@@ -47,6 +47,7 @@ void Game::update(const float dt)
 
 void Game::fixedUpdate(const float dt)
 {
+	world->fixedUpdate(dt);
 }
 
 void Game::render()

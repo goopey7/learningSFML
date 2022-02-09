@@ -15,6 +15,7 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
 		void attachChild(Ptr child);
 		Ptr detachChild(const SceneNode& node);
 
+		void fixedUpdate(const float dt);
 		void update(const float dt);
 		sf::Transform getWorldTransform() const;
 		sf::Vector2f getWorldPosition() const;
@@ -30,8 +31,11 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
 		// only draws the current node but not it's children
 		virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const{};
 
+		virtual void fixedUpateCurrent(const float dt){};
+		void fixedUpdateChildren(const float dt);
 		virtual void updateCurrent(const float dt){};
 		void updateChildren(const float dt);
+
 
 };
 

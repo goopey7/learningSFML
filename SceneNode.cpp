@@ -48,12 +48,23 @@ void SceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	}
 }
 
+void SceneNode::fixedUpdateChildren(const float dt)
+{
+	for(Ptr &child : children)
+		child->fixedUpdate(dt);
+}
 
 void SceneNode::updateChildren(const float dt)
 {
 	for(Ptr &child : children)
 		child->update(dt);
 }
+
+void SceneNode::fixedUpdate(const float dt)
+{
+	fixedUpateCurrent(dt);
+	fixedUpdateChildren(dt);
+} 
 
 void SceneNode::update(const float dt)
 {
