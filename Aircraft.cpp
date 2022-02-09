@@ -23,5 +23,7 @@ void Aircraft::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) co
 
 void Aircraft::updateCurrent(const float dt)
 {
+	sf::Vector2f pos = getWorldPosition();
+	std::cout << "Player Pos " << pos.x << "," << pos.y << "\n";
 }
 

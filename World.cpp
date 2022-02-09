@@ -33,6 +33,7 @@ void World::buildScene()
 
 	// Background
 	sf::Texture &bkgTexture = textures.get(Textures::Desert);
+	bkgTexture.setRepeated(true);
 	sf::IntRect textureRect(worldBounds);
 	std::unique_ptr<SpriteNode> bkg(new SpriteNode(bkgTexture,textureRect));
 	bkg->setPosition(worldBounds.left,worldBounds.top);
