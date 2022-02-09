@@ -5,7 +5,6 @@
 
 #include <iostream>
 #include <fstream>
-#include <sstream>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>

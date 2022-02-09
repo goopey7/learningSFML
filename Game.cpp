@@ -57,14 +57,16 @@ void Game::render()
 
 void Game::run()
 {
-	ResourceHolder<sf::Texture,Textures::ID> textures;
+	TextureHolder textures;
 	textures.load(Textures::Aircraft,"images/Eagle.png");
 	textures.load(Textures::Desert,"images/Desert.png");
 
 	sf::Sprite aircraft;
 	aircraft.setTexture(textures.get(Textures::Aircraft));
 	sf::Sprite desert;
+	textures.get(Textures::Desert).setRepeated(true);
 	desert.setTexture(textures.get(Textures::Desert));
+	desert.setTextureRect(sf::IntRect(0,0,window->getSize().x,window->getSize().y));
 
 	const sf::Time TimePerUpdate = sf::seconds(1.f/TicksPerSec);
 	sf::Clock timer;
@@ -100,6 +102,4 @@ void Game::run()
 		//render();
 	}
 }
-
-
 
