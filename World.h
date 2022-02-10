@@ -1,6 +1,9 @@
 //Copyright Sam Collier 2022
 #pragma once
 
+#include <tmxlite/Map.hpp>
+#include <vector>
+#include "SFMLOrthogonalLayer.h"
 #include <array>
 #include "CommandQueue.h"
 #include "SpriteNode.h"
@@ -10,6 +13,7 @@ class World : private sf::NonCopyable
 {
 	public:
 		explicit World(sf::RenderWindow& window);
+		~World();
 		void fixedUpdate(const float dt);
 		void update(const float dt);
 		void draw();
@@ -42,5 +46,8 @@ class World : private sf::NonCopyable
 
 		CommandQueue commandQueue;
 		Aircraft* playerAircraft;
+
+		tmx::Map map;
+		std::vector<MapLayer*> layers;
 };
 

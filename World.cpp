@@ -7,17 +7,22 @@ World::World(sf::RenderWindow& window)
 	: window(window),
 	worldView(window.getDefaultView()),
 	worldBounds(0.f,0.f,2000.f,2000.f),
-	spawnPos(worldBounds.width / 2.f,worldBounds.height / 2.f)
+	spawnPos(3200.f,3200.f)
 {
+	map.load("assets/untitled.tmx");
+	for(int i=0;i<map.getLayers().size();i++)
+	{
+		layers.push_back(new MapLayer(map,i));
+	}
 	loadTextures();
 	buildScene();
 	worldView.setCenter(spawnPos);
+	worldView.zoom(0.5f);
 }
 
 void World::loadTextures()
 {
 	textures.load(Textures::Aircraft,"images/Eagle.png");
-	textures.load(Textures::Desert,"images/Desert.png");
 }
 
 void World::buildScene()
@@ -29,15 +34,7 @@ void World::buildScene()
 		sceneLayers[i] = layer.get();
 		sceneGraph.attachChild(std::move(layer));
 	}
-
-	// Background
-	sf::Texture &bkgTexture = textures.get(Textures::Desert);
-	bkgTexture.setRepeated(true);
-	sf::IntRect textureRect(worldBounds);
-	std::unique_ptr<SpriteNode> bkg(new SpriteNode(bkgTexture,textureRect));
-	bkg->setPosition(worldBounds.left,worldBounds.top);
-	sceneLayers[Background]->attachChild(std::move(bkg));
-
+	
 	// Aircraft
 	std::unique_ptr<Aircraft> leader(new Aircraft(textures));
 	playerAircraft = leader.get();
@@ -48,6 +45,7 @@ void World::buildScene()
 void World::fixedUpdate(const float dt)
 {
 	worldView.setCenter(playerAircraft->getWorldPosition());
+	window.setView(worldView);
 	// Broadcast commands to sceneGraph
 	while(!commandQueue.isEmpty())
 		sceneGraph.onCommand(commandQueue.pop(),dt);
@@ -57,19 +55,26 @@ void World::fixedUpdate(const float dt)
 
 void World::update(const float dt)
 {
-
 	// Update Scene Graph
 	sceneGraph.update(dt);
 }
 
 void World::draw()
 {
-	window.setView(worldView);
+	for(auto layer : layers)
+		window.draw(*layer);
 	window.draw(sceneGraph);
 }
 
 CommandQueue& World::getCommandQueue()
 {
 	return commandQueue;
+}
+
+World::~World()
+{
+	for(MapLayer* layer : layers)
+		delete layer;
+	layers.clear();
 }
 

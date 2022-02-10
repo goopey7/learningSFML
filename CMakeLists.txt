@@ -5,4 +5,4 @@ project(learningSFML)
 file(GLOB SFML_SRC CONFIGURE_DEPENDS "*.h" "*.cpp")
 
 add_executable(${PROJECT_NAME} ${SFML_SRC})
-target_link_libraries(${PROJECT_NAME} sfml-window sfml-network sfml-system sfml-graphics sfml-audio)
+target_link_libraries(${PROJECT_NAME} tmxlite sfml-window sfml-network sfml-system sfml-graphics sfml-audio)
