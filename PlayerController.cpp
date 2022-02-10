@@ -18,6 +18,25 @@ struct AircraftMover
 	sf::Vector2f velocity;
 };
 
+PlayerController::PlayerController()
+{
+	keyBindings[sf::Keyboard::W] = MoveUp;
+	keyBindings[sf::Keyboard::A] = MoveLeft;
+	keyBindings[sf::Keyboard::S] = MoveDown;
+	keyBindings[sf::Keyboard::D] = MoveRight;
+
+	const float playerSpeed = 30.f;
+	actionBindings[MoveUp].action = derivedAction<Aircraft>(AircraftMover(0.f,-playerSpeed));
+	actionBindings[MoveLeft].action = derivedAction<Aircraft>(AircraftMover(-playerSpeed,0.f));
+	actionBindings[MoveDown].action = derivedAction<Aircraft>(AircraftMover(0.f,playerSpeed));
+	actionBindings[MoveRight].action = derivedAction<Aircraft>(AircraftMover(playerSpeed,0.f));
+
+	for(auto &binding : actionBindings)
+	{
+		binding.second.category = Category::PlayerAircraft;
+	}
+}
+
 void PlayerController::handleEvent(const sf::Event& event, CommandQueue& commands)
 {
 	if(event.type == sf::Event::KeyPressed)
@@ -37,36 +56,53 @@ void PlayerController::handleEvent(const sf::Event& event, CommandQueue& command
 
 void PlayerController::handleRealtimeInput(CommandQueue& commands)
 {
-	const float playerSpeed = 30.f;
-
-
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+	for(auto binding : keyBindings)
 	{
-		Command moveUp;
-		moveUp.category = Category::PlayerAircraft;
-		moveUp.action = derivedAction<Aircraft>(AircraftMover(0.f,-playerSpeed));
-		commands.push(moveUp);
-	}
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-	{
-		Command moveLeft;
-		moveLeft.category = Category::PlayerAircraft;
-		moveLeft.action = derivedAction<Aircraft>(AircraftMover(-playerSpeed,0.f));
-		commands.push(moveLeft);
-	}
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-	{
-		Command moveDown;
-		moveDown.category = Category::PlayerAircraft;
-		moveDown.action = derivedAction<Aircraft>(AircraftMover(0.f,playerSpeed));
-		commands.push(moveDown);
-	}
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-	{
-		Command moveRight;
-		moveRight.category = Category::PlayerAircraft;
-		moveRight.action = derivedAction<Aircraft>(AircraftMover(playerSpeed,0.f));
-		commands.push(moveRight);
+		if(sf::Keyboard::isKeyPressed(binding.first) && isRealtimeAction(binding.second))
+		{
+			commands.push(actionBindings[binding.second]);
+		}
 	}
 }
+
+bool PlayerController::isRealtimeAction(Action action)
+{
+	switch(action)
+	{
+		case MoveUp:
+		case MoveLeft:
+		case MoveDown:
+		case MoveRight:
+			return true;
+		default:
+			return false;
+	}
+}
+
+void PlayerController::bindKey(Action action, sf::Keyboard::Key key)
+{
+	// When remapping we don't want
+	// the previous binding to still be mapped
+	// to the action. At least for now
+	for(auto binding : keyBindings)
+	{
+		if(binding.second == action)
+		{
+			keyBindings.erase(binding.first);
+		}
+	}
+
+	keyBindings[key] = action;
+}
+
+sf::Keyboard::Key PlayerController::getBindedKey(Action action) const
+{
+	for(auto binding : keyBindings)
+	{
+		if(binding.second == action)
+			return binding.first;
+	}
+	return sf::Keyboard::KeyCount;
+}
+
 
