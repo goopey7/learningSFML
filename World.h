@@ -41,5 +41,6 @@ class World : private sf::NonCopyable
 		sf::Vector2f spawnPos;
 
 		CommandQueue commandQueue;
+		Aircraft* playerAircraft;
 };
 

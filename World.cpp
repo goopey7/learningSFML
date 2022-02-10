@@ -40,20 +40,23 @@ void World::buildScene()
 
 	// Aircraft
 	std::unique_ptr<Aircraft> leader(new Aircraft(textures));
+	playerAircraft = leader.get();
 	leader->setPosition(spawnPos);
 	sceneLayers[Foreground]->attachChild(std::move(leader));
 }
 
 void World::fixedUpdate(const float dt)
 {
+	worldView.setCenter(playerAircraft->getWorldPosition());
+	// Broadcast commands to sceneGraph
+	while(!commandQueue.isEmpty())
+		sceneGraph.onCommand(commandQueue.pop(),dt);
+
 	sceneGraph.fixedUpdate(dt);
 }
 
 void World::update(const float dt)
 {
-	// Broadcast commands to sceneGraph
-	while(!commandQueue.isEmpty())
-		sceneGraph.onCommand(commandQueue.pop(),dt);
 
 	// Update Scene Graph
 	sceneGraph.update(dt);
