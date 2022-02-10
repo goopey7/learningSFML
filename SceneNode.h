@@ -6,6 +6,7 @@
 #include <cassert>
 
 #include <SFML/Graphics.hpp>
+#include "Category.h"
 
 class SceneNode : public sf::Transformable, public sf::Drawable, private sf::NonCopyable
 {
@@ -19,6 +20,7 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
 		void update(const float dt);
 		sf::Transform getWorldTransform() const;
 		sf::Vector2f getWorldPosition() const;
+		virtual unsigned int getCategory() const;
 
 	private:
 		std::vector<Ptr> children;
@@ -35,7 +37,5 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
 		void fixedUpdateChildren(const float dt);
 		virtual void updateCurrent(const float dt){};
 		void updateChildren(const float dt);
-
-
 };
 

@@ -32,3 +32,11 @@ void Aircraft::fixedUpateCurrent(const float dt)
 	move(0.f,-40*dt);
 }
 
+unsigned int Aircraft::getCategory() const
+{
+	// if we have other aircraft
+	// we can decide what category
+	// it is here ie. (Player or not)
+	return Category::PlayerAircraft;
+}
+
