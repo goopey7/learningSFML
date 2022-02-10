@@ -10,6 +10,7 @@
 #include <SFML/Network.hpp>
 #include <SFML/Window.hpp>
 
+#include "PlayerController.h"
 #include "World.h"
 
 class Game
@@ -27,9 +28,9 @@ class Game
 
 	private:
 		sf::RenderWindow* window;
-		sf::Event ev;
 
 		World* world;
+		PlayerController pc;
 
 		// For FixedUpdate
 		const int TicksPerSec = 60;

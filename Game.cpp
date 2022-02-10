@@ -32,11 +32,15 @@ Game::~Game()
 
 void Game::handleEvents()
 {
+	CommandQueue& commands = world->getCommandQueue();
+	sf::Event ev;
 	while(window->pollEvent(ev))
 	{
+		pc.handleEvent(ev,commands);
 		if(ev.type == sf::Event::Closed)
 			window->close();
 	}
+	pc.handleRealtimeInput(commands);
 }
 
 void Game::update(const float dt)
