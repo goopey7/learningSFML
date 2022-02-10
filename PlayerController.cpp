@@ -11,8 +11,7 @@ struct AircraftMover
 
 	void operator() (Aircraft& aircraft, const float dt) const
 	{
-		sf::Vector2f pos = aircraft.getPosition();
-		aircraft.setPosition(pos.x + velocity.x*dt, pos.y + velocity.y*dt);
+		aircraft.move(velocity * dt);
 	}
 
 	sf::Vector2f velocity;
@@ -25,7 +24,7 @@ PlayerController::PlayerController()
 	keyBindings[sf::Keyboard::S] = MoveDown;
 	keyBindings[sf::Keyboard::D] = MoveRight;
 
-	const float playerSpeed = 30.f;
+	const float playerSpeed = 15.f;
 	actionBindings[MoveUp].action = derivedAction<Aircraft>(AircraftMover(0.f,-playerSpeed));
 	actionBindings[MoveLeft].action = derivedAction<Aircraft>(AircraftMover(-playerSpeed,0.f));
 	actionBindings[MoveDown].action = derivedAction<Aircraft>(AircraftMover(0.f,playerSpeed));

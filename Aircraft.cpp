@@ -22,14 +22,6 @@ void Aircraft::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) co
 	target.draw(sprite,states);
 }
 
-void Aircraft::updateCurrent(const float dt)
-{
-}
-
-void Aircraft::fixedUpateCurrent(const float dt)
-{
-}
-
 unsigned int Aircraft::getCategory() const
 {
 	// if we have other aircraft

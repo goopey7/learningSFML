@@ -45,7 +45,7 @@ void World::buildScene()
 void World::fixedUpdate(const float dt)
 {
 	worldView.setCenter(playerAircraft->getWorldPosition());
-	window.setView(worldView);
+
 	// Broadcast commands to sceneGraph
 	while(!commandQueue.isEmpty())
 		sceneGraph.onCommand(commandQueue.pop(),dt);
@@ -61,6 +61,7 @@ void World::update(const float dt)
 
 void World::draw()
 {
+	window.setView(worldView);
 	for(auto layer : layers)
 		window.draw(*layer);
 	window.draw(sceneGraph);
