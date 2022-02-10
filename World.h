@@ -2,6 +2,7 @@
 #pragma once
 
 #include <array>
+#include "CommandQueue.h"
 #include "SpriteNode.h"
 #include "Aircraft.h"
 
@@ -12,6 +13,7 @@ class World : private sf::NonCopyable
 		void fixedUpdate(const float dt);
 		void update(const float dt);
 		void draw();
+		CommandQueue& getCommandQueue();
 
 	private:
 		void loadTextures();
@@ -37,5 +39,7 @@ class World : private sf::NonCopyable
 
 		sf::FloatRect worldBounds;
 		sf::Vector2f spawnPos;
+
+		CommandQueue commandQueue;
 };
 
