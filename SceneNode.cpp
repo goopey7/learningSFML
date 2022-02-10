@@ -96,3 +96,15 @@ unsigned int SceneNode::getCategory() const
 	return Category::Scene;
 }
 
+void SceneNode::onCommand(const Command& command, const float dt)
+{
+	// Check if categories match using bitwise AND '&'
+	// if two bits in the same place match then we have a match in category
+	if(command.category & getCategory())
+		command.action(*this,dt);
+
+	// Broadcast command to all children
+	for(Ptr& child : children)
+		child->onCommand(command,dt);
+}
+

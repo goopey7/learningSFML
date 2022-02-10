@@ -6,8 +6,10 @@
 #include <cassert>
 
 #include <SFML/Graphics.hpp>
+#include "Command.h"
 #include "Category.h"
 
+struct Command;
 class SceneNode : public sf::Transformable, public sf::Drawable, private sf::NonCopyable
 {
 	public:
@@ -21,6 +23,7 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
 		sf::Transform getWorldTransform() const;
 		sf::Vector2f getWorldPosition() const;
 		virtual unsigned int getCategory() const;
+		void onCommand(const Command& command, const float dt);
 
 	private:
 		std::vector<Ptr> children;
