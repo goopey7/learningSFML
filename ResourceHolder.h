@@ -12,6 +12,7 @@ namespace Textures
 	{
 		Aircraft,
 		Desert,
+		Hero,
 	};
 }
 namespace Fonts

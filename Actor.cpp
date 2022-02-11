@@ -36,8 +36,6 @@ sf::Vector2f Actor::getVelocity() const
 
 void Actor::updateCurrent(const float dt)
 {
-	//system("clear");
-	//std::cout << "Velocity: " << velocity.x << ',' << velocity.y << '\n';
 }
 
 void Actor::fixedUpateCurrent(const float dt)

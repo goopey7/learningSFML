@@ -8,6 +8,7 @@
 #include "CommandQueue.h"
 #include "SpriteNode.h"
 #include "Aircraft.h"
+#include "Hero.h"
 
 class World : private sf::NonCopyable
 {
@@ -45,9 +46,7 @@ class World : private sf::NonCopyable
 		sf::Vector2f spawnPos;
 
 		CommandQueue commandQueue;
-		Aircraft* playerAircraft;
 
-		tmx::Map map;
-		std::vector<MapLayer*> layers;
+		std::vector<MapLayer*> tileLayers;
 };
 

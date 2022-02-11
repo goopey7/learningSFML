@@ -9,8 +9,9 @@ World::World(sf::RenderWindow& window)
 	worldBounds(0.f,0.f,2000.f,2000.f),
 	spawnPos(0.f,0.f)
 {
-	map.load("assets/orthogonal-outside.tmx");
-	layers.push_back(new MapLayer(map,0));
+	tmx::Map map;
+	map.load("assets/tilemaps/level1.tmx");
+	tileLayers.push_back(new MapLayer(map,0));
 	loadTextures();
 	buildScene();
 	worldView.setCenter(spawnPos);
@@ -19,7 +20,8 @@ World::World(sf::RenderWindow& window)
 
 void World::loadTextures()
 {
-	textures.load(Textures::Aircraft,"images/Eagle.png");
+	textures.load(Textures::Aircraft,"assets/images/Eagle.png");
+	textures.load(Textures::Hero, "assets/playerSprite/adventurer-v1.5-Sheet.png");
 }
 
 void World::buildScene()
@@ -34,14 +36,17 @@ void World::buildScene()
 	
 	// Aircraft
 	std::unique_ptr<Aircraft> leader(new Aircraft(textures));
-	playerAircraft = leader.get();
 	leader->setPosition(spawnPos);
 	sceneLayers[Foreground]->attachChild(std::move(leader));
+
+	// Hero
+	std::unique_ptr<Hero> hero(new Hero(textures));
+	hero->setPosition(spawnPos);
+	sceneLayers[Foreground]->attachChild(std::move(hero));
 }
 
 void World::fixedUpdate(const float dt)
 {
-	worldView.setCenter(playerAircraft->getWorldPosition());
 
 	// Broadcast commands to sceneGraph
 	while(!commandQueue.isEmpty())
@@ -59,7 +64,7 @@ void World::update(const float dt)
 void World::draw()
 {
 	window.setView(worldView);
-	window.draw(*layers[0]);
+	window.draw(*tileLayers[0]);
 	window.draw(sceneGraph);
 }
 
@@ -70,8 +75,8 @@ CommandQueue& World::getCommandQueue()
 
 World::~World()
 {
-	for(MapLayer* layer : layers)
+	for(MapLayer* layer : tileLayers)
 		delete layer;
-	layers.clear();
+	tileLayers.clear();
 }
 

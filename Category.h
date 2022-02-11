@@ -12,6 +12,7 @@ namespace Category
 		None = 0,
 		Scene = 1 << 0,
 		PlayerAircraft = 1 << 1,
+		PlayerHero = 1 << 2,
 	};
 }
 // so for example
