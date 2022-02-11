@@ -1,26 +1,75 @@
 //Copyright Sam Collier 2022
 
 #include "PlayerController.h"
+#include <cmath>
+
+enum StopDir
+{
+	None,
+	Up,
+	Left,
+	Down,
+	Right,
+};
 
 struct AircraftMover
 {
-	AircraftMover(float vx, float vy, bool stopX=false, bool stopY=false)
-		: velocity(vx,vy),bStopX(stopX),bStopY(stopY)
+	AircraftMover(float vx, float vy, StopDir dir = StopDir::None)
+		: velocity(vx,vy),dir(dir)
+	{
+	}
+
+	AircraftMover(StopDir dir)
+		: dir(dir)
 	{
 	}
 
 	void operator() (Aircraft& aircraft, const float dt) const
 	{
-		if(bStopX)
+		switch(dir)
 		{
-			aircraft.setVelocityX(0.f);
-			return;
+			case StopDir::Up:
+			{
+				if(aircraft.getVelocity().y < 0)
+					aircraft.setVelocityY(0.f);
+				break;
+			}
+			case StopDir::Left:
+			{
+				if(aircraft.getVelocity().x < 0)
+					aircraft.setVelocityX(0.f);
+				break;
+			}
+			case StopDir::Down:
+			{
+				if(aircraft.getVelocity().y > 0)
+					aircraft.setVelocityY(0.f);
+				break;
+			}
+			case StopDir::Right:
+			{
+				if(aircraft.getVelocity().x > 0)
+					aircraft.setVelocityX(0.f);
+				break;
+			}
+			case StopDir::None:
+			{
+				if(velocity.x != 0)
+					aircraft.setVelocityX(velocity.x * dt);
+				if(velocity.y != 0)
+					aircraft.setVelocityY(velocity.y * dt);
+
+				// keep velocity constant using 45 - 45 - 90 rule
+				if(velocity.x != 0 && velocity.y != 0)
+				{
+					aircraft.setVelocity(velocity/sqrtf(2.f) * dt);
+				}
+			}
 		}
-		aircraft.setVelocity(velocity * dt);
 	}
 
 	sf::Vector2f velocity;
-	bool bStopX,bStopY;
+	StopDir dir;
 };
 
 PlayerController::PlayerController()
@@ -31,16 +80,16 @@ PlayerController::PlayerController()
 	keyBindings[sf::Keyboard::D] = MoveRight;
 	keyBindings[sf::Keyboard::P] = ShowPos;
 
-	const float playerSpeed = 1500.f;
-	//heldActions[MoveUp].action = derivedAction<Aircraft>(AircraftMover(0.f,-playerSpeed));
-	heldActions[MoveLeft].action = derivedAction<Aircraft>(AircraftMover(-playerSpeed,0.f));
-	//heldActions[MoveDown].action = derivedAction<Aircraft>(AircraftMover(0.f,playerSpeed));
-	heldActions[MoveRight].action = derivedAction<Aircraft>(AircraftMover(playerSpeed,0.f));
+	const float playerSpeed = 3000.f;
+	pressedActions[MoveUp].action = derivedAction<Aircraft>(AircraftMover(0.f,-playerSpeed));
+	pressedActions[MoveLeft].action = derivedAction<Aircraft>(AircraftMover(-playerSpeed,0.f));
+	pressedActions[MoveDown].action = derivedAction<Aircraft>(AircraftMover(0.f,playerSpeed));
+	pressedActions[MoveRight].action = derivedAction<Aircraft>(AircraftMover(playerSpeed,0.f));
 
-	//releasedActions[MoveUp].action = derivedAction<Aircraft>(AircraftMover(0.f,-playerSpeed));
-	releasedActions[MoveLeft].action = derivedAction<Aircraft>(AircraftMover(0.f,0.f,true));
-	//releasedActions[MoveDown].action = derivedAction<Aircraft>(AircraftMover(0.f,playerSpeed));
-	releasedActions[MoveRight].action = derivedAction<Aircraft>(AircraftMover(0.f,0.f,true));
+	releasedActions[MoveUp].action = derivedAction<Aircraft>(AircraftMover(StopDir::Up));
+	releasedActions[MoveLeft].action = derivedAction<Aircraft>(AircraftMover(StopDir::Left));
+	releasedActions[MoveDown].action = derivedAction<Aircraft>(AircraftMover(StopDir::Down));
+	releasedActions[MoveRight].action = derivedAction<Aircraft>(AircraftMover(StopDir::Right));
 
 	pressedActions[ShowPos].action = [] (SceneNode& s, const float dt)
 	{
