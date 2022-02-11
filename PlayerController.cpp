@@ -81,21 +81,26 @@ PlayerController::PlayerController()
 	keyBindings[sf::Keyboard::P] = ShowPos;
 
 	const float playerSpeed = 3000.f;
+	
+	// Pressed Actions
 	pressedActions[MoveUp].action = derivedAction<Aircraft>(AircraftMover(0.f,-playerSpeed));
 	pressedActions[MoveLeft].action = derivedAction<Aircraft>(AircraftMover(-playerSpeed,0.f));
 	pressedActions[MoveDown].action = derivedAction<Aircraft>(AircraftMover(0.f,playerSpeed));
 	pressedActions[MoveRight].action = derivedAction<Aircraft>(AircraftMover(playerSpeed,0.f));
-
-	releasedActions[MoveUp].action = derivedAction<Aircraft>(AircraftMover(StopDir::Up));
-	releasedActions[MoveLeft].action = derivedAction<Aircraft>(AircraftMover(StopDir::Left));
-	releasedActions[MoveDown].action = derivedAction<Aircraft>(AircraftMover(StopDir::Down));
-	releasedActions[MoveRight].action = derivedAction<Aircraft>(AircraftMover(StopDir::Right));
-
 	pressedActions[ShowPos].action = [] (SceneNode& s, const float dt)
 	{
 		std::cout << s.getPosition().x << ',' << s.getPosition().y << '\n';
 	};
 
+	// Held Actions
+
+	// Released Actions
+	releasedActions[MoveUp].action = derivedAction<Aircraft>(AircraftMover(StopDir::Up));
+	releasedActions[MoveLeft].action = derivedAction<Aircraft>(AircraftMover(StopDir::Left));
+	releasedActions[MoveDown].action = derivedAction<Aircraft>(AircraftMover(StopDir::Down));
+	releasedActions[MoveRight].action = derivedAction<Aircraft>(AircraftMover(StopDir::Right));
+
+	// Init categroies
 	for(auto &binding : heldActions)
 	{
 		binding.second.category = Category::PlayerAircraft;
@@ -107,10 +112,6 @@ PlayerController::PlayerController()
 	for(auto &binding : releasedActions)
 	{
 		binding.second.category = Category::PlayerAircraft;
-	}
-	for(auto pair : wasReleased)
-	{
-		wasReleased[pair.first] = true;
 	}
 }
 
