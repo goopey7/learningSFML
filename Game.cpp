@@ -40,7 +40,7 @@ void Game::handleEvents()
 		if(ev.type == sf::Event::Closed)
 			window->close();
 	}
-	pc.handleRealtimeInput(commands);
+	pc.handleHeldInput(commands);
 }
 
 void Game::update(const float dt)

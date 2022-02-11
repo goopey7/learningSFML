@@ -7,13 +7,10 @@ World::World(sf::RenderWindow& window)
 	: window(window),
 	worldView(window.getDefaultView()),
 	worldBounds(0.f,0.f,2000.f,2000.f),
-	spawnPos(3200.f,3200.f)
+	spawnPos(0.f,0.f)
 {
-	map.load("assets/untitled.tmx");
-	for(int i=0;i<map.getLayers().size();i++)
-	{
-		layers.push_back(new MapLayer(map,i));
-	}
+	map.load("assets/orthogonal-outside.tmx");
+	layers.push_back(new MapLayer(map,0));
 	loadTextures();
 	buildScene();
 	worldView.setCenter(spawnPos);
@@ -62,8 +59,7 @@ void World::update(const float dt)
 void World::draw()
 {
 	window.setView(worldView);
-	for(auto layer : layers)
-		window.draw(*layer);
+	window.draw(*layers[0]);
 	window.draw(sceneGraph);
 }
 
